@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <div id="root">
+    <div>123</div>
+  </div>
+
+  <script type="module">
+    import miniVue from './miniVue/index.js'
+    const app = new miniVue({
+      el: '#root',
+      data: {
+        a: 1,
+        c: 6,
+        wow: {
+          age: 1,
+          name: 'bao'
+        },
+        list: [2, 2, 3, 4]
+      },
+      beforeCreate() {
+        console.log('beforeCreate', this);
+      },
+    })
+    window.app = app
+  </script>
+
+
+</body>
+
+</html>
