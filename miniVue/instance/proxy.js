@@ -5,7 +5,6 @@
  * @param {*} namespace 命名空间，当前属性的完整名称
  */
 function ProxyData(vm, data, namespace) {
-  console.log('123', data)
   let proxy = null
   if (data instanceof Array) {
     proxy = ProxyArray(vm, data, namespace)
@@ -72,10 +71,10 @@ function ProxyArray(vm, arr, namespace) {
     toString() {
       return this.join(',')
     },
-    push() { },
-    pop() { },
-    shift() { },
-    unshift() { }
+    push() {},
+    pop() {},
+    shift() {},
+    unshift() {}
   }
   defArrayFunc.call(vm, obj, 'push', namespace, vm)
   defArrayFunc.call(vm, obj, 'pop', namespace, vm)

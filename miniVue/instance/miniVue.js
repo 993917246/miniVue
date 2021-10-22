@@ -32,7 +32,7 @@ export default class miniVue {
     // 创建vnode虚拟dom
     if (options.el) {
       const rootDom = document.querySelector(options.el)
-      mount(vm, rootDom)
+      vm._vnode = mount(vm, rootDom)
     }
   }
 }
