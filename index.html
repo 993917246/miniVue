@@ -10,7 +10,8 @@
 
 <body>
   <div id="root">
-    <div>123</div>
+    <div>name:{{name}}</div>
+    <span>age:{{age}}</span>
   </div>
 
   <script type="module">
@@ -18,16 +19,17 @@
     const app = new miniVue({
       el: '#root',
       data: {
-        a: 1,
-        c: 6,
+        name: '帅宝',
+        age: 18,
+        height: 170,
         wow: {
-          age: 1,
-          name: 'bao'
+          a: 1,
+          b: 'bao'
         },
         list: [2, 2, 3, 4]
       },
       beforeCreate() {
-        console.log('beforeCreate', this);
+        // console.log('beforeCreate', this);
       },
     })
     window.app = app

@@ -97,7 +97,6 @@ function defArrayFunc(obj, func, namespace, vm) {
     configurable: true,
     value(...args) {
       const newArray = Array.prototype[func].apply(this, args)
-      console.log(this);
       console.log(getNamespace(namespace, '') + '修改了')
       return newArray
     }

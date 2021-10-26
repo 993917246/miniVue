@@ -4,6 +4,11 @@ import {
 import {
   mount
 } from './mount.js'
+import {
+  prepareRender,
+  getTemplate2Vnode,
+  getVnode2Template
+} from './render.js'
 
 let uid = 0
 export default class miniVue {
@@ -33,6 +38,9 @@ export default class miniVue {
     if (options.el) {
       const rootDom = document.querySelector(options.el)
       vm._vnode = mount(vm, rootDom)
+      prepareRender(vm, vm._vnode)
+      getTemplate2Vnode()
+      getVnode2Template()
     }
   }
 }
