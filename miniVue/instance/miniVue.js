@@ -6,8 +6,8 @@ import {
 } from './mount.js'
 import {
   prepareRender,
-  getTemplate2Vnode,
-  getVnode2Template
+  renderNode,
+  log
 } from './render.js'
 
 let uid = 0
@@ -17,6 +17,9 @@ export default class miniVue {
 
     // 初始化vue对象
     this._init(options)
+
+    // 调用_render渲染元素内容
+    this._render()
   }
 
 
@@ -39,8 +42,12 @@ export default class miniVue {
       const rootDom = document.querySelector(options.el)
       vm._vnode = mount(vm, rootDom)
       prepareRender(vm, vm._vnode)
-      getTemplate2Vnode()
-      getVnode2Template()
+      log()
     }
+  }
+
+
+  _render() {
+    renderNode(this, this._vnode)
   }
 }

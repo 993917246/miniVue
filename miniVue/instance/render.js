@@ -1,9 +1,15 @@
+import { getValue } from '../utils/ObjectUtil.js'
+
 const template2Vnode = new Map()
 const vnode2Template = new Map()
 
+function log() {
+  console.log('template2Vnode', template2Vnode);
+  console.log('vnode2Template', vnode2Template);
+}
 
 /** 获取虚拟dom中template，跟vnode的对应关系 */
-export function prepareRender(vm, vnode) {
+function prepareRender(vm, vnode) {
   if (vnode === null) return
 
   // 是文本节点
@@ -18,7 +24,6 @@ export function prepareRender(vm, vnode) {
     })
   }
 }
-
 
 /** 查找文本节点中的模板字符串设置vnode，teamplate双向查找 */
 function analysisTemplateString(vm, vnode) {
@@ -50,10 +55,8 @@ function setVnode2Template(template, vnode) {
   }
 }
 
-
 /** 去除模板字符串 {{ }} */
 function getTemplateName(template) {
-  console.log(template);
   if (template.includes('{{') && template.includes('}}')) {
     return template.substring(2, template.length - 2)
   } else {
@@ -62,13 +65,38 @@ function getTemplateName(template) {
 }
 
 
-
-export function getTemplate2Vnode() {
-  console.log('template2Vnode', template2Vnode);
-  return template2Vnode
+/** 渲染节点数据 */
+function renderNode(vm, vnode) {
+  // 是文本节点获取属性进行渲染
+  if (vnode.nodeType === 3) {
+    const template = vnode2Template.get(vnode)  //获取节点所对应的属性模板
+    if (template) { //如果有则获取属性进行元素内容替换
+      let text = vnode.el.nodeValue
+      template.forEach(it => {
+        const templateValue = getNodeValue([vm._data], it)
+        text = text.replace(`{{${it}}}`, templateValue)
+      })
+      vnode.el.nodeValue = text
+    }
+  } else {
+    // 不是文本节点则继续遍历子元素
+    for (let i = 0; i < vnode.children.length; i++) {
+      renderNode(vm, vnode.children[i])
+    }
+  }
 }
 
-export function getVnode2Template() {
-  console.log('vnode2Template', vnode2Template);
-  return vnode2Template
+/** 获取节点所对应的文本内容 */
+function getNodeValue(objs, templateName) {
+  for (let i = 0; i < objs.length; i++) {
+    const value = getValue(objs[i], templateName)
+    if (value) return value
+  }
+}
+
+
+export {
+  prepareRender,
+  renderNode,
+  log
 }
