@@ -1,3 +1,5 @@
+import { renderData } from './render.js'
+
 /**
  * 生成代理data
  * @param {*} vm vue实例
@@ -36,6 +38,8 @@ function ProxyObject(vm, data, namespace) {
       set(newVal) {
         console.log(`${getNamespace(namespace, key)}设置了新值:`, newVal);
         data[key] = newVal
+        // 重新渲染元素节点
+        renderData(vm, getNamespace(namespace, key))
       }
     })
 
@@ -48,6 +52,8 @@ function ProxyObject(vm, data, namespace) {
       set(newVal) {
         console.log(`${getNamespace(namespace, key)}设置了新值:`, newVal);
         data[key] = newVal
+        // 重新渲染元素节点
+        renderData(vm, getNamespace(namespace, key))
       }
     })
 
@@ -71,10 +77,10 @@ function ProxyArray(vm, arr, namespace) {
     toString() {
       return this.join(',')
     },
-    push() {},
-    pop() {},
-    shift() {},
-    unshift() {}
+    push() { },
+    pop() { },
+    shift() { },
+    unshift() { }
   }
   defArrayFunc.call(vm, obj, 'push', namespace, vm)
   defArrayFunc.call(vm, obj, 'pop', namespace, vm)

@@ -64,6 +64,17 @@ function getTemplateName(template) {
   }
 }
 
+/** 数据更新后进行修改 */
+function renderData(vm, template) {
+  console.log('————————————————重新渲染了节点————————————————');
+  // 获取依赖更新数据的所有节点
+  const _vnode = template2Vnode.get(template)
+  if (!_vnode) return
+  _vnode.forEach(it => {
+    // 对节点进行重新渲染
+    renderNode(vm, it)
+  })
+}
 
 /** 渲染节点数据 */
 function renderNode(vm, vnode) {
@@ -71,7 +82,7 @@ function renderNode(vm, vnode) {
   if (vnode.nodeType === 3) {
     const template = vnode2Template.get(vnode)  //获取节点所对应的属性模板
     if (template) { //如果有则获取属性进行元素内容替换
-      let text = vnode.el.nodeValue
+      let text = vnode.text
       template.forEach(it => {
         const templateValue = getNodeValue([vm._data], it)
         text = text.replace(`{{${it}}}`, templateValue)
@@ -98,5 +109,6 @@ function getNodeValue(objs, templateName) {
 export {
   prepareRender,
   renderNode,
+  renderData,
   log
 }
