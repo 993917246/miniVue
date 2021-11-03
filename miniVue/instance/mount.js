@@ -1,5 +1,5 @@
 import VNode from '../vdom/vnode.js'
-
+import { vmodel } from './grammer/vmodel.js'
 
 export function mount(vm, el) {
   // vm._vnode = constructVNode(vm, el)
@@ -10,6 +10,7 @@ export function mount(vm, el) {
 
 // 创建虚拟节点
 function constructVNode(vm, elm, parent = null) {
+  analysisAttr(vm, elm, parent)
   const vnode = new VNode({
     tag: elm.nodeName,
     el: elm,
@@ -46,5 +47,15 @@ function getNodeText(elm) {
     return elm.nodeValue
   } else {
     return ""
+  }
+}
+
+
+function analysisAttr(vm, elm, parent) {
+  if (elm.nodeType === 1) {
+    const attr = elm.getAttributeNames()
+    if (attr.includes('v-model')) {
+      vmodel(vm, elm, elm.getAttribute('v-model'))
+    }
   }
 }

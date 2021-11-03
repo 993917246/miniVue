@@ -1,13 +1,8 @@
-import {
-  ProxyData
-} from './proxy.js'
-import {
-  mount
-} from './mount.js'
+import { ProxyData } from './proxy.js'
+import { mount } from './mount.js'
 import {
   prepareRender,
   renderNode,
-  log
 } from './render.js'
 
 let uid = 0
@@ -42,7 +37,6 @@ export default class miniVue {
       const rootDom = document.querySelector(options.el)
       vm._vnode = mount(vm, rootDom)
       prepareRender(vm, vm._vnode)
-      log()
     }
   }
 

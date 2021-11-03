@@ -11,6 +11,27 @@ function getValue(obj, name) {
   return value
 }
 
+
+/** 设置obj中data数据为value */
+/** data ~= obj.x */
+function setValue(obj, data, value) {
+  if (!obj) return
+  const attrList = data.split('.')
+  console.log(attrList);
+  let temp = obj
+  for (let i = 0; i < attrList.length - 1; i++) {
+    if (temp[attrList[i]]) {
+      temp = temp[attrList[i]]
+    } else {
+      return
+    }
+  }
+  if (temp[attrList[attrList.length - 1]]) {
+    temp[attrList[attrList.length - 1]] = value
+  }
+}
+
 export {
-  getValue
+  getValue,
+  setValue
 }
