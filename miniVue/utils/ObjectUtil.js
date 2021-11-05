@@ -17,7 +17,6 @@ function getValue(obj, name) {
 function setValue(obj, data, value) {
   if (!obj) return
   const attrList = data.split('.')
-  console.log(attrList);
   let temp = obj
   for (let i = 0; i < attrList.length - 1; i++) {
     if (temp[attrList[i]]) {

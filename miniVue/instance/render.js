@@ -17,6 +17,9 @@ function prepareRender(vm, vnode) {
     analysisTemplateString(vm, vnode)
   }
 
+  // v-model
+  vmodelAttr(vnode)
+
   // 是元素节点
   if (vnode.nodeType === 1) {
     vnode.children.forEach(it => {
@@ -78,17 +81,32 @@ function renderData(vm, template) {
 
 /** 渲染节点数据 */
 function renderNode(vm, vnode) {
-  // 是文本节点获取属性进行渲染
   if (vnode.nodeType === 3) {
-    const template = vnode2Template.get(vnode)  //获取节点所对应的属性模板
-    if (template) { //如果有则获取属性进行元素内容替换
+    // 是文本节点获取属性进行渲染
+    const templates = vnode2Template.get(vnode)  //获取节点所对应的属性模板
+    if (templates) { //如果有则获取属性进行元素内容替换
       let text = vnode.text
-      template.forEach(it => {
-        const templateValue = getNodeValue([vm._data], it)
+      templates.forEach(it => {
+        const templateValue = getNodeValue([vm._data, vnode.env], it)
         text = text.replace(`{{${it}}}`, templateValue)
       })
       vnode.el.nodeValue = text
     }
+
+
+  } else if (vnode.nodeType === 1 && vnode.tag === "INPUT") {
+    // 如果节点是input节点则获取数据赋值给input.value
+    const templates = vnode2Template.get(vnode)
+    if (templates) {
+      templates.forEach(it => {
+        const templateValue = getNodeValue([vm._data, vnode.env], it)
+        if (templateValue) {
+          vnode.el.value = templateValue
+        }
+      })
+    }
+
+
   } else {
     // 不是文本节点则继续遍历子元素
     for (let i = 0; i < vnode.children.length; i++) {
@@ -102,6 +120,17 @@ function getNodeValue(objs, templateName) {
   for (let i = 0; i < objs.length; i++) {
     const value = getValue(objs[i], templateName)
     if (value) return value
+  }
+}
+
+/** 获取节点有v-model属性的节点，获取依赖 */
+function vmodelAttr(vnode) {
+  if (vnode.nodeType !== 1) return
+  const attrs = vnode.el.getAttributeNames()
+  if (attrs.includes('v-model')) {
+    const template = vnode.el.getAttribute('v-model')
+    setTemplate2Vnode(template, vnode)
+    setVnode2Template(template, vnode)
   }
 }
 
