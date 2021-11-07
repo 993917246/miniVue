@@ -21,16 +21,15 @@ function prepareRender(vm, vnode) {
   vmodelAttr(vnode)
 
   // 是元素节点
-  if (vnode.nodeType === 1) {
-    vnode.children.forEach(it => {
-      prepareRender(vm, it)
-    })
-  }
+  vnode.children.forEach(it => {
+    prepareRender(vm, it)
+  })
 }
 
 /** 查找文本节点中的模板字符串设置vnode，teamplate双向查找 */
 function analysisTemplateString(vm, vnode) {
   const tempateStrList = vnode.text.match(/{{[a-zA-Z0-9_.]+}}/g) || []
+  vnode.template = tempateStrList
   for (let i = 0; i < tempateStrList.length; i++) {
     setTemplate2Vnode(tempateStrList[i], vnode)
     setVnode2Template(tempateStrList[i], vnode)
@@ -67,9 +66,10 @@ function getTemplateName(template) {
   }
 }
 
+
 /** 数据更新后进行修改 */
 function renderData(vm, template) {
-  console.log('————————————————重新渲染了节点————————————————');
+  console.log(`————————————————${template}:重新渲染了节点————————————————`);
   // 获取依赖更新数据的所有节点
   const _vnode = template2Vnode.get(template)
   if (!_vnode) return
@@ -88,11 +88,12 @@ function renderNode(vm, vnode) {
       let text = vnode.text
       templates.forEach(it => {
         const templateValue = getNodeValue([vm._data, vnode.env], it)
-        text = text.replace(`{{${it}}}`, templateValue)
+        if (templateValue) {
+          text = text.replace(`{{${it}}}`, templateValue)
+        }
       })
       vnode.el.nodeValue = text
     }
-
 
   } else if (vnode.nodeType === 1 && vnode.tag === "INPUT") {
     // 如果节点是input节点则获取数据赋值给input.value
@@ -105,7 +106,6 @@ function renderNode(vm, vnode) {
         }
       })
     }
-
 
   } else {
     // 不是文本节点则继续遍历子元素

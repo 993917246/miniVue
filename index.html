@@ -10,10 +10,10 @@
 
 <body>
   <div id="root">
-    <div>name:{{name}}</div>
-    <div>wow.a:{{wow.a}}</div>
-    <div>age:{{age}}</div>
-    <input type="text" v-model='name'>
+
+    <ul>
+      <li v-for='it in dataList'>{{it.name}}</li>
+    </ul>
   </div>
 
   <script type="module">
@@ -28,7 +28,11 @@
           a: 1,
           b: 'bao'
         },
-        list: [2, 2, 3, 4]
+        list: [2, 2, 3, 4],
+        dataList: [{
+          name: 'name1',
+          age: 'age1'
+        }]
       },
       beforeCreate() {
         // console.log('beforeCreate', this);
