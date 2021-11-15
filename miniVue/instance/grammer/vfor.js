@@ -22,6 +22,7 @@ function vfor(vm, instructions, elm, parent) {
   })
   vnode.instructions = instructions //记录vfor的指令
   parent.el.removeChild(elm) //移除原有的vfor的DOM实例
+  parent.el.appendChild(document.createTextNode(""));
   const childrensNode = analysisInstructions(vm, instructions, elm, parent)
   return vnode
 }

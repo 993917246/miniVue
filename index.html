@@ -10,7 +10,6 @@
 
 <body>
   <div id="root">
-
     <ul>
       <li v-for='it in dataList'>{{it.name}}</li>
     </ul>
@@ -32,6 +31,15 @@
         dataList: [{
           name: 'name1',
           age: 'age1'
+        }, {
+          name: 'name2',
+          age: 'age2'
+        }, {
+          name: 'name3',
+          age: 'age3'
+        }, {
+          name: 'name4',
+          age: 'age4'
         }]
       },
       beforeCreate() {

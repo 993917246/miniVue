@@ -11,6 +11,7 @@
  * env 当前节点的数据作用域
  * instructions 指令值
  */
+let number = 1
 export default class VNode {
   constructor(options) {
     for (const key in options) {
@@ -19,5 +20,6 @@ export default class VNode {
     this.env = {}
     this.instructions = null
     this.template = []
+    this.id = number++
   }
 }

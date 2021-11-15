@@ -1,4 +1,5 @@
 import { renderData } from './render.js'
+import { reBuild } from './mount.js'
 
 /**
  * 生成代理data
@@ -103,7 +104,8 @@ function defArrayFunc(obj, func, namespace, vm) {
     configurable: true,
     value(...args) {
       const newArray = Array.prototype[func].apply(this, args)
-      console.log(getNamespace(namespace, '') + '修改了')
+      reBuild(vm, getNamespace(namespace, ''))
+      renderData(vm, getNamespace(namespace, ''))
       return newArray
     }
   })

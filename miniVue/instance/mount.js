@@ -2,15 +2,21 @@ import VNode from '../vdom/vnode.js'
 import { vmodel } from './grammer/vmodel.js'
 import { vfor } from './grammer/vfor.js'
 import { mergeAttr } from '../utils/ObjectUtil.js'
+import { getVnodeByTemplate, clearMap, prepareRender } from './render.js'
 
-export function mount(vm, el) {
+function mount(vm, el) {
   // vm._vnode = constructVNode(vm, el)
   return constructVNode(vm, el)
 }
 
 
-
-// 创建虚拟节点
+/**
+ * 创建虚拟节点
+ * @param {*} vm vue实例
+ * @param {*} elm 节点实例
+ * @param {*} parent 父级vnode
+ * @returns 
+ */
 function constructVNode(vm, elm, parent = null) {
   let vnode = analysisAttr(vm, elm, parent)
   if (!vnode) {
@@ -34,8 +40,7 @@ function constructVNode(vm, elm, parent = null) {
   }
 
   //获取当前dom元素所有子元素，包括换行  如果nodeType =0 代表是for元素的模板需要获取父级的children列表
-  // const childs = vnode.nodeType === 0 ? vnode.parent.el.childNodes : vnode.el.childNodes
-  const childs = vnode.el.childNodes
+  const childs = vnode.nodeType === 0 ? vnode.parent.el.childNodes : vnode.el.childNodes
   // 遍历所有子节点递归获取子元素vnode
   childs.forEach(it => {
     const childNodes = constructVNode(vm, it, vnode)
@@ -74,5 +79,25 @@ function analysisAttr(vm, elm, parent) {
       return vfor(vm, elm.getAttribute('v-for'), elm, parent)
     }
   }
+}
+
+/** 重新渲染节点 */
+function reBuild(vm, nameSpace) {
+  const vnode = getVnodeByTemplate(nameSpace)
+  console.log(vnode);
+  for (let i = 0; i < vnode.length; i++) {
+    vnode[i].parent.el.innerHTML = ''
+    vnode[i].parent.el.appendChild(vnode[i].el)
+    const result = constructVNode(vm, vnode[i].el, vnode[i].parent)
+    vnode[i].parent.children = [result]
+    clearMap()
+    prepareRender(vm, vm._vnode)
+  }
+}
+
+
+export {
+  mount,
+  reBuild
 }
 

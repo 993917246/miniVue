@@ -17,6 +17,11 @@ function prepareRender(vm, vnode) {
     analysisTemplateString(vm, vnode)
   }
 
+  if (vnode.nodeType === 0) {
+    setTemplate2Vnode(vnode.data, vnode)
+    setVnode2Template(vnode.data, vnode)
+  }
+
   // v-model
   vmodelAttr(vnode)
 
@@ -135,9 +140,25 @@ function vmodelAttr(vnode) {
 }
 
 
+function getVnodeByTemplate(template) {
+  return template2Vnode.get(template)
+}
+
+function getTemplateByVnode(vnode) {
+  return vnode2Template.get(vnode)
+}
+
+function clearMap() {
+  template2Vnode.clear()
+  vnode2Template.clear()
+}
+
 export {
   prepareRender,
   renderNode,
   renderData,
-  log
+  log,
+  getVnodeByTemplate,
+  getTemplateByVnode,
+  clearMap
 }
