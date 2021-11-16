@@ -3,6 +3,7 @@ import { vmodel } from './grammer/vmodel.js'
 import { vfor } from './grammer/vfor.js'
 import { mergeAttr } from '../utils/ObjectUtil.js'
 import { getVnodeByTemplate, clearMap, prepareRender } from './render.js'
+import { checkBind } from './grammer/v-bind.js'
 
 function mount(vm, el) {
   // vm._vnode = constructVNode(vm, el)
@@ -18,7 +19,7 @@ function mount(vm, el) {
  * @returns 
  */
 function constructVNode(vm, elm, parent = null) {
-  let vnode = analysisAttr(vm, elm, parent)
+  let vnode = analysisAttr(vm, elm, parent)  // 绑定v-model v-for
   if (!vnode) {
     vnode = new VNode({
       tag: elm.nodeName,
@@ -38,6 +39,9 @@ function constructVNode(vm, elm, parent = null) {
       vnode.env = mergeAttr(vnode.env, parent ? parent.env : {});
     }
   }
+
+  checkBind(vm, vnode) // 绑定v-bind
+
 
   //获取当前dom元素所有子元素，包括换行  如果nodeType =0 代表是for元素的模板需要获取父级的children列表
   const childs = vnode.nodeType === 0 ? vnode.parent.el.childNodes : vnode.el.childNodes
@@ -84,7 +88,6 @@ function analysisAttr(vm, elm, parent) {
 /** 重新渲染节点 */
 function reBuild(vm, nameSpace) {
   const vnode = getVnodeByTemplate(nameSpace)
-  console.log(vnode);
   for (let i = 0; i < vnode.length; i++) {
     vnode[i].parent.el.innerHTML = ''
     vnode[i].parent.el.appendChild(vnode[i].el)

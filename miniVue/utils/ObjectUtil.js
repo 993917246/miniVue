@@ -1,5 +1,10 @@
 
-/** 从obj中获得name的值（name是个字符串 name.a） */
+/**
+ * 从obj中获得name的值（name是个字符串 name.a）
+ * @param {*} obj  通常为vm._data
+ * @param {*} name 属性值命名空间
+ * @returns 
+ */
 function getValue(obj, name) {
   if (!obj) return
   const nameList = name.split('.')
@@ -12,7 +17,13 @@ function getValue(obj, name) {
 }
 
 
-/** 设置obj中data数据为value */
+/**
+ * 设置obj中data数据为value
+ * @param {*} obj 通常为vm._data
+ * @param {*} data 属性值命名空间
+ * @param {*} value 新值
+ * @returns 
+ */
 /** data ~= obj.x */
 function setValue(obj, data, value) {
   if (!obj) return
