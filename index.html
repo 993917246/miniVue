@@ -6,14 +6,30 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
+
+  <style>
+    .red {
+      color: red;
+    }
+
+    .blue {
+      color: blue;
+    }
+  </style>
+
 </head>
 
 <body>
   <div id="root">
+    <span>wow.b:{{wow.b}}</span> <br />
+    <input type="text" v-model='wow.b'>
     <ul>
       <li v-for='it in dataList'>{{it.name}}</li>
     </ul>
-    <input type="text" :value='name'>
+    <input type="text" :value='name'><br />
+    <div :class='myClass'>154891561</div>
+    <div v-bind:class='myClass'>154891561</div>
+    <div :class='{blue:age > 10,red:age<10}'>156156</div>
   </div>
 
   <script type="module">
@@ -41,7 +57,8 @@
         }, {
           name: 'name4',
           age: 'age4'
-        }]
+        }],
+        myClass: 'red'
       },
       beforeCreate() {
         // console.log('beforeCreate', this);

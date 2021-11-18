@@ -103,9 +103,9 @@ function defArrayFunc(obj, func, namespace, vm) {
     enumerable: true,
     configurable: true,
     value(...args) {
-      const newArray = Array.prototype[func].apply(this, args)
-      reBuild(vm, getNamespace(namespace, ''))
-      renderData(vm, getNamespace(namespace, ''))
+      const newArray = Array.prototype[func].apply(this, args) //更改数据
+      reBuild(vm, getNamespace(namespace, '')) // 重新挂载节点并收集依赖
+      renderData(vm, getNamespace(namespace, '')) // 重新渲染数据
       return newArray
     }
   })

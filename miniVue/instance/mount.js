@@ -42,7 +42,6 @@ function constructVNode(vm, elm, parent = null) {
 
   checkBind(vm, vnode) // 绑定v-bind
 
-
   //获取当前dom元素所有子元素，包括换行  如果nodeType =0 代表是for元素的模板需要获取父级的children列表
   const childs = vnode.nodeType === 0 ? vnode.parent.el.childNodes : vnode.el.childNodes
   // 遍历所有子节点递归获取子元素vnode
@@ -87,14 +86,14 @@ function analysisAttr(vm, elm, parent) {
 
 /** 重新渲染节点 */
 function reBuild(vm, nameSpace) {
-  const vnode = getVnodeByTemplate(nameSpace)
+  const vnode = getVnodeByTemplate(nameSpace) //获取依赖改动数据的所有dom节点
   for (let i = 0; i < vnode.length; i++) {
-    vnode[i].parent.el.innerHTML = ''
-    vnode[i].parent.el.appendChild(vnode[i].el)
-    const result = constructVNode(vm, vnode[i].el, vnode[i].parent)
-    vnode[i].parent.children = [result]
-    clearMap()
-    prepareRender(vm, vm._vnode)
+    vnode[i].parent.el.innerHTML = '' //清空父组件的所有子元素
+    vnode[i].parent.el.appendChild(vnode[i].el) //还原最原始的子组件
+    const result = constructVNode(vm, vnode[i].el, vnode[i].parent)  //获取重新渲染的节点
+    vnode[i].parent.children = [result] //插入父元素
+    clearMap() //清空所有依赖关系
+    prepareRender(vm, vm._vnode) //重新获取依赖关系
   }
 }
 

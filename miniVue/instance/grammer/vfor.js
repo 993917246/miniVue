@@ -22,7 +22,7 @@ function vfor(vm, instructions, elm, parent) {
   })
   vnode.instructions = instructions //记录vfor的指令
   parent.el.removeChild(elm) //移除原有的vfor的DOM实例
-  parent.el.appendChild(document.createTextNode(""));
+  parent.el.appendChild(document.createTextNode("")); //无意义 只是插入一个标签对齐
   const childrensNode = analysisInstructions(vm, instructions, elm, parent)
   return vnode
 }
@@ -36,15 +36,17 @@ function vfor(vm, instructions, elm, parent) {
  * @returns 循环之后的dom实例数组
  */
 function analysisInstructions(vm, instructions, elm, parent) {
-  const inset = getInstructions(instructions)
-  let dataSet = getValue(vm._data, inset[2])
+  const inset = getInstructions(instructions) //获取指令数组
+  let dataSet = getValue(vm._data, inset[2]) //获取数据
   if (!dataSet) throw Error(`v-for:vm._data中不存在${inset[2]}值`)
   const childrensNode = []
+
+  // 循环创建真实dom插入父元素
   for (let i = 0; i < dataSet.length; i++) {
     const node = document.createElement(elm.nodeName)
     node.innerHTML = elm.innerHTML
-    const env = getForEnv(inset[0], dataSet[i], i)
-    node.setAttribute('env', JSON.stringify(env))
+    const env = getForEnv(inset[0], dataSet[i], i) // 获取单独作用域数据数据
+    node.setAttribute('env', JSON.stringify(env)) //将作用域数据挂载到dom Attr上
     parent.el.appendChild(node)
     childrensNode.push(node)
   }
