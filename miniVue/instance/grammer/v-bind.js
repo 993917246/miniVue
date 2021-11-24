@@ -2,7 +2,7 @@ import { getValue, mergeAttr } from '../../utils/ObjectUtil.js'
 import { generateAnnoCode, isTrue } from '../../utils/code.js'
 
 /**
- * 绑定v-bind
+ * 搜索v-bind指令
  * @param {*} vm  vue实例
  * @param {*} vnode 虚拟dom
  */
@@ -19,7 +19,7 @@ function checkBind(vm, vnode) {
 }
 
 /**
- * 修改数据
+ * 绑定v-bind
  * @param {*} vm vue实例
  * @param {*} vnode 虚拟dom
  * @param {*} name 需要绑定的值指令 : v-bind:src

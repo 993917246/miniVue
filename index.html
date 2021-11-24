@@ -21,15 +21,17 @@
 
 <body>
   <div id="root">
-    <span>wow.b:{{wow.b}}</span> <br />
-    <input type="text" v-model='wow.b'>
+    <span>dd:{{dd}}</span> <br />
+    <input type="text" v-model='dd' />
     <ul>
       <li v-for='it in dataList'>{{it.name}}</li>
     </ul>
-    <input type="text" :value='name'><br />
+    <input type="text" :value='name' /><br />
     <div :class='myClass'>154891561</div>
     <div v-bind:class='myClass'>154891561</div>
     <div :class='{blue:age > 10,red:age<10}'>156156</div>
+    <input type="text" @input='sayHello' />
+    <span @click='sayHello'>123</span>
   </div>
 
   <script type="module">
@@ -38,13 +40,12 @@
       el: '#root',
       data: {
         name: '帅宝',
+        dd: '',
         age: 18,
-        height: 170,
         wow: {
           a: 1,
           b: 'bao'
         },
-        list: [2, 2, 3, 4],
         dataList: [{
           name: 'name1',
           age: 'age1'
@@ -60,9 +61,16 @@
         }],
         myClass: 'red'
       },
-      beforeCreate() {
-        // console.log('beforeCreate', this);
+      computed: {
+        hello() {
+          return 'hello computed'
+        }
       },
+      methods: {
+        sayHello() {
+          console.log('hello world');
+        }
+      }
     })
     window.app = app
   </script>

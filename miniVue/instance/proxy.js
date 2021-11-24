@@ -1,5 +1,6 @@
 import { renderData } from './render.js'
 import { reBuild } from './mount.js'
+import { getValue } from '../utils/ObjectUtil.js'
 
 /**
  * 生成代理data
@@ -39,6 +40,10 @@ function ProxyObject(vm, data, namespace) {
       set(newVal) {
         console.log(`${getNamespace(namespace, key)}设置了新值:`, newVal);
         data[key] = newVal
+        const value = getValue(vm._data, getNamespace(namespace, key))
+        if (value instanceof Array) {
+          reBuild(vm, getNamespace(namespace, key))
+        }
         // 重新渲染元素节点
         renderData(vm, getNamespace(namespace, key))
       }
@@ -53,6 +58,10 @@ function ProxyObject(vm, data, namespace) {
       set(newVal) {
         console.log(`${getNamespace(namespace, key)}设置了新值:`, newVal);
         data[key] = newVal
+        const value = getValue(vm._data, getNamespace(namespace, key))
+        if (value instanceof Array) {
+          reBuild(vm, getNamespace(namespace, key))
+        }
         // 重新渲染元素节点
         renderData(vm, getNamespace(namespace, key))
       }

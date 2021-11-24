@@ -1,9 +1,10 @@
 import VNode from '../vdom/vnode.js'
-import { vmodel } from './grammer/vmodel.js'
-import { vfor } from './grammer/vfor.js'
 import { mergeAttr } from '../utils/ObjectUtil.js'
 import { getVnodeByTemplate, clearMap, prepareRender } from './render.js'
 import { checkBind } from './grammer/v-bind.js'
+import { vmodel } from './grammer/v-model.js'
+import { vfor } from './grammer/v-for.js'
+import { checkOn } from './grammer/v-on.js'
 
 function mount(vm, el) {
   // vm._vnode = constructVNode(vm, el)
@@ -41,6 +42,7 @@ function constructVNode(vm, elm, parent = null) {
   }
 
   checkBind(vm, vnode) // 绑定v-bind
+  checkOn(vm, vnode)
 
   //获取当前dom元素所有子元素，包括换行  如果nodeType =0 代表是for元素的模板需要获取父级的children列表
   const childs = vnode.nodeType === 0 ? vnode.parent.el.childNodes : vnode.el.childNodes
