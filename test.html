@@ -113,13 +113,14 @@
         <div v-bind:class="{red: msg.name == name, blue: msg.name != name}">{{msg.name}}: <span>{{msg.msg}}</span></div>
       </li>
     </ul>
-    <input type="text" value="" v-model="sendText" id="sendMsg" placeholder="请输入内容，按回车键入"> <button
-      v-on:click="sendMsg">发送</button>
+    <input type="text" value="" v-model="sendText" id="sendMsg" placeholder="请输入内容，按回车键入">
+    <button v-on:click="sendMsg">发送</button>
   </div>
 
   <script type="module">
     import Due from "./miniVue/index.js";
-    let chat = new Due({
+    import { log } from './miniVue/instance/render.js'
+    window.app = new Due({
       el: "#chat",
       data: {
         name: "",
@@ -138,21 +139,21 @@
             console.log("发送失败");
           });
           this.sendText = "";
-        }
+        },
       },
       created: function () {
-        // setInterval(function () {
-        //   axios({
-        //     method: "get",
-        //     url: "https://developer.duyiedu.com/edu/groupChat/getMsgList"
-        //   }).then(function (resp) {
-        //     chat.msgList = resp.data;
-        //     var ul = document.getElementsByTagName("ul")[0];
-        //     ul.scrollTop = ul.scrollHeight;
-        //   }).catch(function (event) {
-        //     console.log(event);
-        //   });
-        // }, 1000);
+        setInterval(() => {
+          axios({
+            method: "get",
+            url: "https://developer.duyiedu.com/edu/groupChat/getMsgList"
+          }).then((resp) => {
+            this.msgList = resp.data;
+            var ul = document.getElementsByTagName("ul")[0];
+            ul.scrollTop = ul.scrollHeight;
+          }).catch(function (event) {
+            console.log(event);
+          });
+        }, 1000);
       }
     });
   </script>

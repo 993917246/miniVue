@@ -1,7 +1,7 @@
 
 /**
  * 从obj中获得name的值（name是个字符串 name.a）
- * @param {*} obj  通常为vm._data
+ * @param {*} obj  通常为vm._data || vnode.dev
  * @param {*} name 属性值命名空间
  * @returns 
  */
@@ -10,8 +10,8 @@ function getValue(obj, name) {
   const nameList = name.split('.')
   let value = obj
   for (let i = 0; i < nameList.length; i++) {
-    value = value[nameList[i]] || undefined
-    if (!value) return
+    value = value[nameList[i]]
+    if (value === undefined) return
   }
   return value
 }
@@ -20,11 +20,10 @@ function getValue(obj, name) {
 /**
  * 设置obj中data数据为value
  * @param {*} obj 通常为vm._data
- * @param {*} data 属性值命名空间
+ * @param {*} data 属性值命名空间 obj.a.b.c
  * @param {*} value 新值
  * @returns 
  */
-/** data ~= obj.x */
 function setValue(obj, data, value) {
   if (!obj) return
   const attrList = data.split('.')
@@ -36,7 +35,7 @@ function setValue(obj, data, value) {
       return
     }
   }
-  if (temp[attrList[attrList.length - 1]]) {
+  if (temp[attrList[attrList.length - 1]] !== undefined) {
     temp[attrList[attrList.length - 1]] = value
   }
 }

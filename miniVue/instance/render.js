@@ -93,7 +93,7 @@ function renderNode(vm, vnode) {
       let text = vnode.text
       templates.forEach(it => {
         const templateValue = getNodeValue([vm._data, vnode.env], it)
-        if (templateValue) {
+        if (templateValue !== undefined) {
           text = text.replace(`{{${it}}}`, templateValue)
         }
       })
@@ -106,7 +106,7 @@ function renderNode(vm, vnode) {
     if (templates) {
       templates.forEach(it => {
         const templateValue = getNodeValue([vm._data, vnode.env], it)
-        if (templateValue) {
+        if (templateValue !== undefined) {
           vnode.el.value = templateValue
         }
       })
@@ -124,7 +124,8 @@ function renderNode(vm, vnode) {
 function getNodeValue(objs, templateName) {
   for (let i = 0; i < objs.length; i++) {
     const value = getValue(objs[i], templateName)
-    if (value) return value
+    // console.log(templateName,value);
+    if (value !== undefined) return value
   }
 }
 
